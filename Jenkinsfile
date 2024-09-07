@@ -48,14 +48,21 @@ pipeline {
 
     post {
         success {
-            mail to: "viloshanaravindu@gmail.com",
-            subject: "Pipeline Success - Build # ${currentBuild.number}",
-            body: "The pipeline has successfully completed all stages. Build logs are attached."
+            // Use the emailext plugin for email with build log attachment
+            emailext(
+                to: "viloshanaravindu@gmail.com",
+                subject: "Pipeline Success - Build # ${currentBuild.number}",
+                body: "The pipeline has successfully completed all stages. Build logs are attached.",
+                attachLog: true
+            )
         }
         failure {
-            mail to: "viloshanaravindu@gmail.com",
-            subject: "Pipeline Failure - Build # ${currentBuild.number}",
-            body: "The pipeline has failed at stage ${env.STAGE_NAME}. Build logs are attached."
+            emailext(
+                to: "viloshanaravindu@gmail.com",
+                subject: "Pipeline Failure - Build # ${currentBuild.number}",
+                body: "The pipeline has failed at stage ${env.STAGE_NAME}. Build logs are attached.",
+                attachLog: true
+            )
         }
     }
 }
